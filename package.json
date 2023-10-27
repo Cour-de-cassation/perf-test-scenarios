@@ -1,0 +1,23 @@
+{
+  "name": "perf-test-scenarios",
+  "version": "1.0.0",
+  "description": "performance tests for juritj and dbsder api",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cour-de-cassation/perf-test-scenarios.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Cour-de-cassation/perf-test-scenarios/issues"
+  },
+  "homepage": "https://github.com/Cour-de-cassation/perf-test-scenarios#readme",
+  "dependencies": {
+    "autocannon": "7.12.0",
+    "dbsder-api-types": "1.1.24"
+  }
+}

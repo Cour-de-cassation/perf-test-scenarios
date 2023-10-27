@@ -4,6 +4,7 @@
   "description": "performance tests for juritj and dbsder api",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "npm run test"
   },
   "repository": {

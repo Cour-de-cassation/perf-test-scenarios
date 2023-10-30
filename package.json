@@ -2,7 +2,7 @@
   "name": "perf-test-scenarios",
   "version": "1.0.0",
   "description": "performance tests for juritj and dbsder api",
-  "main": "index.js",
+  "main": "testDbsderApi.js",
   "scripts": {
     "start:test:dbsder-api": "node -r dotenv/config testDbsderApi.js",
     "test": "npm run test"

@@ -1,0 +1,40 @@
+image: docker:20.10.22
+services:
+  - docker:20.10.22-dind
+
+stages:
+  - build
+  - deploy
+
+build:
+  stage: build
+  variables:
+    HTTP_PROXY: $HTTP_PROXY
+    HTTPS_PROXY: $HTTPS_PROXY
+  script: 
+    - echo $CI_JOB_TOKEN | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+    - docker build
+        --build-arg http_proxy=$HTTP_PROXY
+        --build-arg https_proxy=$HTTPS_PROXY
+        -t $CI_REGISTRY/cour-de-cassation/perf-test-scenarios:$CI_COMMIT_BRANCH-$CI_COMMIT_SHORT_SHA .
+    - docker push $CI_REGISTRY/cour-de-cassation/perf-test-scenarios:$CI_COMMIT_BRANCH-$CI_COMMIT_SHORT_SHA 
+  tags:
+    - docker
+  only:
+    - master
+
+deploy:
+  stage: deploy
+  variables:
+    DBSDER_API_URL: $PERF_TEST_DBSDER_API_URL
+    LABEL_API_KEY: $PERF_TEST_LABEL_API_KEY
+    DBSDER_API_AMOUNT: $PERF_TEST_DBSDER_API_AMOUNT
+  script:
+      - docker run -e DBSDER_API_URL=$PERF_TEST_DBSDER_API_URL -e LABEL_API_KEY=$PERF_TEST_LABEL_API_KEY -e DBSDER_API_AMOUNT=$PERF_TEST_DBSDER_API_AMOUNT $CI_REGISTRY/cour-de-cassation/perf-test-scenarios:$CI_COMMIT_BRANCH-$CI_COMMIT_SHORT_SHA 
+  tags:
+    - docker
+  dependencies:
+    - build
+  only:
+    - master
+  when: manual

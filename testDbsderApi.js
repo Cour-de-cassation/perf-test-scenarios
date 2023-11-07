@@ -10,4 +10,4 @@ autocannon({
     },
     method : 'GET',
     amount: parseInt(process.env.DBSDER_API_AMOUNT) || 500,
-}, console.log)
+}, console.log).on('reqError', console.log)

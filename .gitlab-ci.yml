@@ -22,6 +22,8 @@ build:
     - docker
   only:
     - master
+    - re7
+    - dev
 
 deploy:
   stage: deploy
@@ -35,6 +37,9 @@ deploy:
     - docker
   dependencies:
     - build
-  only:
-    - master
+  rules:
+    - if: $CI_COMMIT_BRANCH == "dev" || $CI_COMMIT_BRANCH == "re7"
+      when: always
+    - if: $CI_COMMIT_BRANCH == "master"
+      when: manual
   when: manual

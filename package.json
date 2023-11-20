@@ -3,17 +3,17 @@
   "version": "1.0.0",
   "description": "performance tests for juritj and dbsder api",
   "main": "testDbsderApi.js",
+  "author": "Cour de Cassation",
+  "license": "MIT",
   "scripts": {
-    "start:test:dbsder-api": "node -r dotenv/config testDbsderApi.js",
-    "test": "npm run test",
-    "lint:fix": "eslint --fix ."
+    "start:test:dbsder-api": "node -r dotenv/config src/testDbsderApi.js",
+    "format": "prettier --write \"src/*.js\"",
+    "lint": "eslint \"src/*.js\" --fix"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Cour-de-cassation/perf-test-scenarios.git"
   },
-  "author": "",
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/Cour-de-cassation/perf-test-scenarios/issues"
   },
@@ -24,8 +24,9 @@
     "dotenv": "16.3.1"
   },
   "devDependencies": {
-    "eslint": "^8.53.0",
-    "eslint-config-prettier": "^9.0.0",
-    "prettier": "^3.1.0"
+    "eslint": "8.53.0",
+    "eslint-config-prettier": "9.0.0",
+    "husky": "8.0.3",
+    "prettier": "3.1.0"
   }
 }

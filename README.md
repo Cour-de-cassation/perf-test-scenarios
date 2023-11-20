@@ -18,6 +18,16 @@ LABEL_API_KEY=LABEL_API_KEY # La clé API de l'applicatif
 DBSDER_API_AMOUNT=500 # Optionnel, le nombre de requêtes
 ````
 
+## Installation 
+Pour installer les packages nécessaires au bon fonctionnement de l'application, ouvrir un terminal et entrer la commande suivante : 
+```bash
+npm install
+```  
+N'oubliez pas d'installer **husky** pour obtenir les hooks de commit/push
+```bash
+npx husky install
+```
+
 ## Lancement
 
 Au sein du **package.json**, on lance le script pour tester DbsderAPI via la commande :

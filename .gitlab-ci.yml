@@ -23,7 +23,7 @@ build:
   only:
     - dev
 
-deploy:
+test-dbsder:
   stage: deploy
   needs: ["build"]
   variables:
@@ -32,6 +32,51 @@ deploy:
     DBSDER_API_AMOUNT: $PERF_TEST_DBSDER_API_AMOUNT
   script:
       - docker run -e DBSDER_API_URL=$PERF_TEST_DBSDER_API_URL -e LABEL_API_KEY=$PERF_TEST_LABEL_API_KEY -e DBSDER_API_AMOUNT=$PERF_TEST_DBSDER_API_AMOUNT $CI_REGISTRY/cour-de-cassation/perf-test-scenarios:$CI_COMMIT_BRANCH-$CI_COMMIT_SHORT_SHA 
+  tags:
+    - docker
+  dependencies:
+    - build
+  only:
+    - dev
+  when: manual
+
+test-juritj:
+  stage: deploy
+  needs: ["build"]
+  variables:
+    JURITJ_API_URL: $PERF_TEST_JURITJ_API_URL
+  script:
+      - docker run -e JURITJ_API_URL=$PERF_TEST_JURITJ_API_URL  $CI_REGISTRY/cour-de-cassation/perf-test-scenarios:$CI_COMMIT_BRANCH-$CI_COMMIT_SHORT_SHA 
+  tags:
+    - docker
+  dependencies:
+    - build
+  only:
+    - dev
+  when: manual
+
+test-juritj-sc1:
+  stage: deploy
+  needs: ["build"]
+  variables:
+    JURITJ_API_URL: $PERF_TEST_JURITJ_API_URL
+  script:
+      - docker run -e JURITJ_API_URL=$PERF_TEST_JURITJ_API_URL  $CI_REGISTRY/cour-de-cassation/perf-test-scenarios:$CI_COMMIT_BRANCH-$CI_COMMIT_SHORT_SHA 
+  tags:
+    - docker
+  dependencies:
+    - build
+  only:
+    - dev
+  when: manual
+
+test-juritj-sc2:
+  stage: deploy
+  needs: ["build"]
+  variables:
+    JURITJ_API_URL: $PERF_TEST_JURITJ_API_URL
+  script:
+      - docker run -e JURITJ_API_URL=$PERF_TEST_JURITJ_API_URL  $CI_REGISTRY/cour-de-cassation/perf-test-scenarios:$CI_COMMIT_BRANCH-$CI_COMMIT_SHORT_SHA 
   tags:
     - docker
   dependencies:

@@ -1,6 +1,4 @@
-import { mandatoryDecisionMetadata } from './utils '
-
-const bufferedFile = Buffer.from('some fake data')
+const { mandatoryDecisionMetadata } = require('./utils')
 
 /*
  * This first scenario aims to successfully call the endpoint POST /decisions on JURITJ API.
@@ -12,10 +10,20 @@ autocannon(
     title: 'POST /decisions on JURITJ API',
     url: `${process.env.JURITJ_API_URL}/v1/decisions`,
     method: 'POST',
-    body: JSON.stringify(mandatoryDecisionMetadata),
-    form: bufferedFile,
+    form: {
+      decisionIntegre: {
+        type: 'file',
+        path: 'src/juritj-api/wordperfect-example-file.wpd'
+      },
+      metadonnees: {
+        type: 'text',
+        value: JSON.stringify(mandatoryDecisionMetadata)
+      }
+    },
     tlsOptions: {
-      cert: process.env.CLIENT_CERT
+      ca: process.env.CA_CERT,
+      cert: process.env.CLIENT_CERT,
+      key: process.env.CLIENT_PRIVATE_KEY
     },
     amount: 50
   },

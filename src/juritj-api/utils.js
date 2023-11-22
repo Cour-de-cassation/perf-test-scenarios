@@ -1,4 +1,4 @@
-export const mandatoryDecisionMetadata = {
+const mandatoryDecisionMetadata = {
   nomJuridiction: 'Juridictions civiles de première instance',
   idJuridiction: 'TJ75011',
   numeroRegistre: 'A',
@@ -20,3 +20,5 @@ export const mandatoryDecisionMetadata = {
   pourvoiCourDeCassation: false,
   debatPublic: true
 }
+
+module.exports = { mandatoryDecisionMetadata }

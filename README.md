@@ -16,6 +16,11 @@ DBSDER_API_URL=http://localhost:PORT # L'url de l'API
 LABEL_API_KEY=LABEL_API_KEY # La clé API de l'applicatif
 # À renseigner
 DBSDER_API_AMOUNT=500 # Optionnel, le nombre de requêtes
+
+JURITJ_API_URL=http://localhost:PORT # L'url de l'API
+CLIENT_PRIVATE_KEY="client authentication authority certificate" # La clé privée du client
+CLIENT_CERT="client certificate" # Le certificat client
+CA_CERT="certification authority certificate" # L'authorité de certification
 ````
 
 ## Installation 

@@ -8,23 +8,22 @@ Les tests se reposent sur la librairie [autocannon](https://github.com/mcollina/
 
 ## Paramétrage
 
-Vous pouvez modifier le nombre d'appels via la variable d'environnement **DBSDER_API_AMOUNT**.
-
 Afin de garantir l'appel, il faut renseigner variables suivantes :
 ````
-DBSDER_API_URL=http://localhost:PORT # L'url de l'API
-LABEL_API_KEY=LABEL_API_KEY # La clé API de l'applicatif
-# À renseigner
-DBSDER_API_AMOUNT=500 # Optionnel, le nombre de requêtes
+DBSDER_API_URL=http://localhost:PORT
+LABEL_API_KEY=LABEL_API_KEY
+OPS_API_KEY=OPS_API_KEY
+NORMALIZATION_API_KEY=NORMALIZATION_API_KEY
 
-JURITJ_API_URL=http://localhost:PORT # L'url de l'API
-CLIENT_PRIVATE_KEY="client authentication authority certificate" # La clé privée du client
-CLIENT_CERT="client certificate" # Le certificat client
-CA_CERT="certification authority certificate" # L'authorité de certification
-CLIENT_PRIVATE_KEY_PASSPHRASE="client private key passphrase" #Le mot de passe de la clé privée
+JURITJ_API_URL=http://localhost:PORT
+CLIENT_PRIVATE_KEY="client authentication authority certificate"
+CLIENT_CERT="client certificate"
+CA_CERT="certification authority certificate"
+CLIENT_PRIVATE_KEY_PASSPHRASE="client private key passphrase"
 ````
 
 ## Installation 
+
 Pour installer les packages nécessaires au bon fonctionnement de l'application, ouvrir un terminal et entrer la commande suivante : 
 ```bash
 npm install

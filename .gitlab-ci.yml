@@ -3,39 +3,96 @@ services:
   - docker:20.10.22-dind
 
 stages:
-  - build
   - deploy
 
-build:
-  stage: build
+test-dbsder:
+  stage: deploy
   variables:
     HTTP_PROXY: $HTTP_PROXY
     HTTPS_PROXY: $HTTPS_PROXY
-  script: 
-    - echo $CI_JOB_TOKEN | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
-    - docker build
-        --build-arg http_proxy=$HTTP_PROXY
-        --build-arg https_proxy=$HTTPS_PROXY
-        -t $CI_REGISTRY/cour-de-cassation/perf-test-scenarios:$CI_COMMIT_BRANCH-$CI_COMMIT_SHORT_SHA .
-    - docker push $CI_REGISTRY/cour-de-cassation/perf-test-scenarios:$CI_COMMIT_BRANCH-$CI_COMMIT_SHORT_SHA 
-  tags:
-    - docker
-  only:
-    - dev
-
-deploy:
-  stage: deploy
-  needs: ["build"]
-  variables:
     DBSDER_API_URL: $PERF_TEST_DBSDER_API_URL
     LABEL_API_KEY: $PERF_TEST_LABEL_API_KEY
     DBSDER_API_AMOUNT: $PERF_TEST_DBSDER_API_AMOUNT
   script:
-      - docker run -e DBSDER_API_URL=$PERF_TEST_DBSDER_API_URL -e LABEL_API_KEY=$PERF_TEST_LABEL_API_KEY -e DBSDER_API_AMOUNT=$PERF_TEST_DBSDER_API_AMOUNT $CI_REGISTRY/cour-de-cassation/perf-test-scenarios:$CI_COMMIT_BRANCH-$CI_COMMIT_SHORT_SHA 
+    - echo $CI_JOB_TOKEN | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+    - docker build
+        --build-arg http_proxy=$HTTP_PROXY
+        --build-arg https_proxy=$HTTPS_PROXY
+        -t perf-test-scenarios .
+    - docker run -e HTTP_PROXY=$HTTP_PROXY -e HTTPS_PROXY=$HTTPS_PROXY -e DBSDER_API_URL=$PERF_TEST_DBSDER_API_URL -e LABEL_API_KEY=$PERF_TEST_LABEL_API_KEY -e DBSDER_API_AMOUNT=$PERF_TEST_DBSDER_API_AMOUNT perf-test-scenarios npm run test:dbsder
+    - echo 'ok'
   tags:
     - docker
-  dependencies:
-    - build
   only:
     - dev
   when: manual
+
+test-juritj:
+  stage: deploy
+  variables:
+    HTTP_PROXY: $HTTP_PROXY
+    HTTPS_PROXY: $HTTPS_PROXY
+    JURITJ_API_URL: $PERF_TEST_JURITJ_API_URL
+    CLIENT_PRIVATE_KEY: $PERF_TEST_CLIENT_PRIVATE_KEY
+    CLIENT_CERT: $PERF_TEST_CLIENT_CERT
+    CA_CERT: $PERF_TEST_CA_CERT
+    CLIENT_PRIVATE_KEY_PASSPHRASE: $PERF_TEST_CLIENT_PRIVATE_KEY_PASSPHRASE
+  script:
+    - echo $CI_JOB_TOKEN | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+    - docker build
+        --build-arg http_proxy=$HTTP_PROXY
+        --build-arg https_proxy=$HTTPS_PROXY
+        -t perf-test-scenarios .
+    - docker run -e HTTP_PROXY=$HTTP_PROXY -e HTTPS_PROXY=$HTTPS_PROXY -e JURITJ_API_URL=$PERF_TEST_JURITJ_API_URL -e CLIENT_PRIVATE_KEY=$PERF_TEST_CLIENT_PRIVATE_KEY -e CLIENT_CERT=$PERF_TEST_CLIENT_CERT -e CA_CERT=$PERF_TEST_CA_CERT -e CLIENT_PRIVATE_KEY_PASSPHRASE=$PERF_TEST_CLIENT_PRIVATE_KEY_PASSPHRASE perf-test-scenarios npm run test:juritj
+    - echo 'ok'
+  tags:
+    - docker
+  only:
+    - dev
+  when: manual
+
+test-juritj-sc1:
+  stage: deploy
+  variables:
+    HTTP_PROXY: $HTTP_PROXY
+    HTTPS_PROXY: $HTTPS_PROXY
+    JURITJ_API_URL: $PERF_TEST_JURITJ_API_URL
+    CLIENT_PRIVATE_KEY: $PERF_TEST_CLIENT_PRIVATE_KEY
+    CLIENT_CERT: $PERF_TEST_CLIENT_CERT
+    CA_CERT: $PERF_TEST_CA_CERT
+  script:
+    - echo $CI_JOB_TOKEN | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+    - docker build
+        --build-arg http_proxy=$HTTP_PROXY
+        --build-arg https_proxy=$HTTPS_PROXY
+        -t perf-test-scenarios .
+    - docker run -e HTTP_PROXY=$HTTP_PROXY -e HTTPS_PROXY=$HTTPS_PROXY -e JURITJ_API_URL=$PERF_TEST_JURITJ_API_URL -e CLIENT_PRIVATE_KEY=$PERF_TEST_CLIENT_PRIVATE_KEY -e CLIENT_CERT=$PERF_TEST_CLIENT_CERT -e CA_CERT=$PERF_TEST_CA_CERT -e CLIENT_PRIVATE_KEY_PASSPHRASE=$PERF_TEST_CLIENT_PRIVATE_KEY_PASSPHRASE perf-test-scenarios npm run test:sc1:juritj
+    - echo 'ok'
+  tags:
+    - docker
+  only:
+    - dev
+  when: manual
+
+#test-juritj-sc2:
+#  stage: deploy
+#  variables:
+#    HTTP_PROXY: $HTTP_PROXY
+#    HTTPS_PROXY: $HTTPS_PROXY
+#    JURITJ_API_URL: $PERF_TEST_JURITJ_API_URL
+#    CLIENT_PRIVATE_KEY: $PERF_TEST_CLIENT_PRIVATE_KEY
+#    CLIENT_CERT: $PERF_TEST_CLIENT_CERT
+#    CA_CERT: $PERF_TEST_CA_CERT
+#  script:
+#    - echo $CI_JOB_TOKEN | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+#    - docker build
+#        --build-arg http_proxy=$HTTP_PROXY
+#        --build-arg https_proxy=$HTTPS_PROXY
+#        -t perf-test-scenarios .
+#    - docker run -e HTTP_PROXY=$HTTP_PROXY -e HTTPS_PROXY=$HTTPS_PROXY -e JURITJ_API_URL=$PERF_TEST_JURITJ_API_URL -e CLIENT_PRIVATE_KEY=$PERF_TEST_CLIENT_PRIVATE_KEY -e CLIENT_CERT=$PERF_TEST_CLIENT_CERT -e CA_CERT=$PERF_TEST_CA_CERT -e CLIENT_PRIVATE_KEY_PASSPHRASE=$PERF_TEST_CLIENT_PRIVATE_KEY_PASSPHRASE perf-test-scenarios npm run test:sc2:juritj
+#    - echo 'ok'
+#  tags:
+#    - docker
+#  only:
+#    - dev
+#  when: manual

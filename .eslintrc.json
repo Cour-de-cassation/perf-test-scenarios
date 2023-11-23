@@ -2,7 +2,7 @@
     "root": true,
     "parserOptions": {
         "ecmaVersion": "latest",
-        "sourceType": "script"
+        "sourceType": "module"
     },
     "extends": ["eslint:recommended", "prettier"],
     "env": {

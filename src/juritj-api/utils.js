@@ -21,4 +21,25 @@ const mandatoryDecisionMetadata = {
   debatPublic: true
 }
 
-module.exports = { mandatoryDecisionMetadata }
+const autocannonConf = {
+  title: 'POST /decisions on JURITJ API',
+  url: `${process.env.JURITJ_API_URL}/v1/decisions`,
+  method: 'POST',
+  form: {
+    decisionIntegre: {
+      type: 'file',
+      path: 'src/juritj-api/wordperfect-example-file.wpd'
+    },
+    metadonnees: {
+      type: 'text',
+      value: JSON.stringify(mandatoryDecisionMetadata)
+    }
+  },
+  tlsOptions: {
+    ca: process.env.CA_CERT,
+    cert: process.env.CLIENT_CERT,
+    key: process.env.CLIENT_PRIVATE_KEY
+  }
+}
+
+module.exports = { mandatoryDecisionMetadata, autocannonConf }

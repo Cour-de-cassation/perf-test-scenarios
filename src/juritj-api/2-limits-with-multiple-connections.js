@@ -1,4 +1,4 @@
-const { mandatoryDecisionMetadata } = require('./utils')
+const { autocannonConf } = require('./utils')
 
 /*
  * This second scenario aims to test the limits of JURITJ API with multiple workers and multiple connections.
@@ -12,24 +12,7 @@ const autocannon = require('autocannon')
 // Round 1 : one connection, one worker, 100req
 autocannon(
   {
-    title: 'POST /decisions on JURITJ API',
-    url: `${process.env.JURITJ_API_URL}/v1/decisions`,
-    method: 'POST',
-    form: {
-      decisionIntegre: {
-        type: 'file',
-        path: 'src/juritj-api/wordperfect-example-file.wpd'
-      },
-      metadonnees: {
-        type: 'text',
-        value: JSON.stringify(mandatoryDecisionMetadata)
-      }
-    },
-    tlsOptions: {
-      ca: process.env.CA_CERT,
-      cert: process.env.CLIENT_CERT,
-      key: process.env.CLIENT_PRIVATE_KEY
-    },
+    ...autocannonConf,
     amount: 100,
     workers: 1,
     connections: 1
@@ -40,24 +23,7 @@ autocannon(
 // Round 2 : 10 connections, 2 workers, 100req
 autocannon(
   {
-    title: 'POST /decisions on JURITJ API',
-    url: `${process.env.JURITJ_API_URL}/v1/decisions`,
-    method: 'POST',
-    form: {
-      decisionIntegre: {
-        type: 'file',
-        path: 'src/juritj-api/wordperfect-example-file.wpd'
-      },
-      metadonnees: {
-        type: 'text',
-        value: JSON.stringify(mandatoryDecisionMetadata)
-      }
-    },
-    tlsOptions: {
-      ca: process.env.CA_CERT,
-      cert: process.env.CLIENT_CERT,
-      key: process.env.CLIENT_PRIVATE_KEY
-    },
+    ...autocannonConf,
     amount: 100,
     connections: 10,
     workers: 2
@@ -68,24 +34,7 @@ autocannon(
 // Round 3 : 100 connections, 4 workers, 1000req
 autocannon(
   {
-    title: 'POST /decisions on JURITJ API',
-    url: `${process.env.JURITJ_API_URL}/v1/decisions`,
-    method: 'POST',
-    form: {
-      decisionIntegre: {
-        type: 'file',
-        path: 'src/juritj-api/wordperfect-example-file.wpd'
-      },
-      metadonnees: {
-        type: 'text',
-        value: JSON.stringify(mandatoryDecisionMetadata)
-      }
-    },
-    tlsOptions: {
-      ca: process.env.CA_CERT,
-      cert: process.env.CLIENT_CERT,
-      key: process.env.CLIENT_PRIVATE_KEY
-    },
+    ...autocannonConf,
     amount: 1000,
     connections: 100,
     workers: 4
@@ -96,24 +45,7 @@ autocannon(
 // Round 4 : 1000 connections, 8 workers, 10000req
 autocannon(
   {
-    title: 'POST /decisions on JURITJ API',
-    url: `${process.env.JURITJ_API_URL}/v1/decisions`,
-    method: 'POST',
-    form: {
-      decisionIntegre: {
-        type: 'file',
-        path: 'src/juritj-api/wordperfect-example-file.wpd'
-      },
-      metadonnees: {
-        type: 'text',
-        value: JSON.stringify(mandatoryDecisionMetadata)
-      }
-    },
-    tlsOptions: {
-      ca: process.env.CA_CERT,
-      cert: process.env.CLIENT_CERT,
-      key: process.env.CLIENT_PRIVATE_KEY
-    },
+    ...autocannonConf,
     amount: 10000,
     connections: 1000,
     workers: 8
@@ -124,24 +56,7 @@ autocannon(
 // Round 5 : 10000 connections, 12 workers, 100000req
 autocannon(
   {
-    title: 'POST /decisions on JURITJ API',
-    url: `${process.env.JURITJ_API_URL}/v1/decisions`,
-    method: 'POST',
-    form: {
-      decisionIntegre: {
-        type: 'file',
-        path: 'src/juritj-api/wordperfect-example-file.wpd'
-      },
-      metadonnees: {
-        type: 'text',
-        value: JSON.stringify(mandatoryDecisionMetadata)
-      }
-    },
-    tlsOptions: {
-      ca: process.env.CA_CERT,
-      cert: process.env.CLIENT_CERT,
-      key: process.env.CLIENT_PRIVATE_KEY
-    },
+    ...autocannonConf,
     amount: 100000,
     connections: 10000,
     workers: 12

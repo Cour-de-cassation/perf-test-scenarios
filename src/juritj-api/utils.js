@@ -1,3 +1,5 @@
+const { readFileSync } = require("fs")
+
 const mandatoryDecisionMetadata = {
   nomJuridiction: 'Juridictions civiles de première instance',
   idJuridiction: 'TJ75011',
@@ -21,6 +23,16 @@ const mandatoryDecisionMetadata = {
   debatPublic: true
 }
 
+const certificates = readCertificates()
+
+function readCertificates() {
+  const  privateKey= readFileSync('/certificates/private-key.pem', 'utf8')
+  const  certAuthority= readFileSync('/certificates/ca.pem', 'utf8')
+  const  clientCert= readFileSync('/certificates/client-cert.key', 'utf8')
+
+  return { privateKey, certAuthority, clientCert }
+}
+
 const autocannonConf = {
   title: 'POST /decisions on JURITJ API',
   url: `${process.env.JURITJ_API_URL}/v1/decisions`,
@@ -35,12 +47,19 @@ const autocannonConf = {
       value: JSON.stringify(mandatoryDecisionMetadata)
     }
   },
+  // tlsOptions: {
+  //   ca: process.env.CA_CERT,
+  //   cert: process.env.CLIENT_CERT,
+  //   key: process.env.CLIENT_PRIVATE_KEY,
+  //   passphrase: process.env.CLIENT_PRIVATE_KEY_PASSPHRASE
+  // }
   tlsOptions: {
-    ca: process.env.CA_CERT,
-    cert: process.env.CLIENT_CERT,
-    key: process.env.CLIENT_PRIVATE_KEY,
+    ca: certificates.certAuthority,
+    cert: certificates.certKey,
+    key: certificates.privateKey,
     passphrase: process.env.CLIENT_PRIVATE_KEY_PASSPHRASE
   }
 }
+
 
 module.exports = { mandatoryDecisionMetadata, autocannonConf }

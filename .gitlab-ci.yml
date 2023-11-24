@@ -4,13 +4,6 @@ services:
 
 stages:
   - deploy
-variables:
-  HTTP_PROXY: $HTTP_PROXY
-  HTTPS_PROXY: $HTTPS_PROXY
-  JURITJ_API_URL: $PERF_TEST_JURITJ_API_URL
-  CLIENT_PRIVATE_KEY: $PERF_TEST_CLIENT_PRIVATE_KEY
-  CLIENT_CERT: $PERF_TEST_CLIENT_CERT
-  CA_CERT: $PERF_TEST_CA_CERT
 
 test-dbsder:
   stage: deploy
@@ -36,15 +29,26 @@ test-dbsder:
 
 test-juritj:
   stage: deploy
+  variables:
+    HTTP_PROXY: $HTTP_PROXY
+    HTTPS_PROXY: $HTTPS_PROXY
+    JURITJ_API_URL: $PERF_TEST_JURITJ_API_URL
+    CLIENT_PRIVATE_KEY: $PERF_TEST_CLIENT_PRIVATE_KEY
+    CLIENT_CERT: $PERF_TEST_CLIENT_CERT
+    CA_CERT: $PERF_TEST_CA_CERT
+    CLIENT_PRIVATE_KEY_PASSPHRASE: $PERF_TEST_CLIENT_PRIVATE_KEY_PASSPHRASE
   script:
     - echo $CI_JOB_TOKEN | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
     - docker build
         --build-arg http_proxy=$HTTP_PROXY
         --build-arg https_proxy=$HTTPS_PROXY
         -t perf-test-scenarios .
-    - cat docker.env | envsubst > docker.env.subst
-    - cat docker.env.subst
-    - docker run --env-file docker.env.subst perf-test-scenarios npm run test:juritj
+    - mkdir /certificates
+    - echo $TEST_CERT_AUTH > /certificates/ca.pem
+    - echo $TEST_CERT_KEY > /certificates/client-cert.key
+    - echo $TEST_PRIVATE_KEY > /certificates/private-key.pem
+    - chmod 600 /certificates/*
+    - docker run perf-test-scenarios npm run test:juritj
     - echo 'ok'
   tags:
     - docker

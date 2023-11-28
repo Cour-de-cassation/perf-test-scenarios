@@ -1,9 +1,5 @@
-const { autocannonConf } = require('./utils')
-
-/*
- * This first scenario aims to successfully call the endpoint POST /decisions on JURITJ API.
- */
 const autocannon = require('autocannon')
+const { autocannonConf } = require('./utils')
 
 autocannon(
   {

@@ -4,22 +4,46 @@ services:
 
 stages:
   - deploy
+variables:
+  HTTP_PROXY: $HTTP_PROXY
+  HTTPS_PROXY: $HTTPS_PROXY
+  # DBSDER VARIABLES
+  DBSDER_API_URL: $PERF_TEST_DBSDER_API_URL
+  LABEL_API_KEY: $PERF_TEST_LABEL_API_KEY
+  OPS_API_KEY: $PERF_TEST_OPS_API_KEY
+  NORMALIZATION_API_KEY: $PERF_TEST_NORMALIZATION_API_KEY
+  # JURITJ VARIABLES
+  JURITJ_API_URL: $PERF_TEST_JURITJ_API_URL
+  CA_CERT: $PERF_TEST_CA_CERT
+  CLIENT_CERT: $PERF_TEST_CLIENT_CERT
+  CLIENT_PRIVATE_KEY: $PERF_TEST_CLIENT_PRIVATE_KEY
+  CLIENT_PRIVATE_KEY_PASSPHRASE: $PERF_TEST_CLIENT_PRIVATE_KEY_PASSPHRASE
 
 test-dbsder:
   stage: deploy
-  variables:
-    HTTP_PROXY: $HTTP_PROXY
-    HTTPS_PROXY: $HTTPS_PROXY
-    DBSDER_API_URL: $PERF_TEST_DBSDER_API_URL
-    LABEL_API_KEY: $PERF_TEST_LABEL_API_KEY
-    DBSDER_API_AMOUNT: $PERF_TEST_DBSDER_API_AMOUNT
   script:
     - echo $CI_JOB_TOKEN | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
     - docker build
         --build-arg http_proxy=$HTTP_PROXY
         --build-arg https_proxy=$HTTPS_PROXY
         -t perf-test-scenarios .
-    - docker run -e HTTP_PROXY=$HTTP_PROXY -e HTTPS_PROXY=$HTTPS_PROXY -e DBSDER_API_URL=$PERF_TEST_DBSDER_API_URL -e LABEL_API_KEY=$PERF_TEST_LABEL_API_KEY -e DBSDER_API_AMOUNT=$PERF_TEST_DBSDER_API_AMOUNT perf-test-scenarios npm run test:dbsder
+    - docker run -e HTTP_PROXY=$HTTP_PROXY -e HTTPS_PROXY=$HTTPS_PROXY -e DBSDER_API_URL=$PERF_TEST_DBSDER_API_URL -e LABEL_API_KEY=$PERF_TEST_LABEL_API_KEY perf-test-scenarios npm run test:connect:dbsder
+    - echo 'ok'
+  tags:
+    - docker
+  only:
+    - dev
+  when: manual
+
+test-dbsder-api-sc1:
+  stage: deploy
+  script:
+    - echo $CI_JOB_TOKEN | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+    - docker build
+      --build-arg http_proxy=$HTTP_PROXY
+      --build-arg https_proxy=$HTTPS_PROXY
+      -t perf-test-scenarios .
+    - docker run -e HTTP_PROXY=$HTTP_PROXY -e HTTPS_PROXY=$HTTPS_PROXY -e DBSDER_API_URL=$PERF_TEST_DBSDER_API_URL -e OPS_API_KEY=$PERF_TEST_OPS_API_KEY -e NORMALIZATION_API_KEY=$PERF_TEST_NORMALIZATION_API_KEY perf-test-scenarios npm run test:sc1:dbsder-api
     - echo 'ok'
   tags:
     - docker
@@ -29,14 +53,6 @@ test-dbsder:
 
 test-juritj:
   stage: deploy
-  variables:
-    HTTP_PROXY: $HTTP_PROXY
-    HTTPS_PROXY: $HTTPS_PROXY
-    JURITJ_API_URL: $PERF_TEST_JURITJ_API_URL
-    CLIENT_PRIVATE_KEY: $PERF_TEST_CLIENT_PRIVATE_KEY
-    CLIENT_CERT: $PERF_TEST_CLIENT_CERT
-    CA_CERT: $PERF_TEST_CA_CERT
-    CLIENT_PRIVATE_KEY_PASSPHRASE: $PERF_TEST_CLIENT_PRIVATE_KEY_PASSPHRASE
   script:
     - echo $CI_JOB_TOKEN | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
     - docker build
@@ -58,13 +74,6 @@ test-juritj:
 
 test-juritj-sc1:
   stage: deploy
-  variables:
-    HTTP_PROXY: $HTTP_PROXY
-    HTTPS_PROXY: $HTTPS_PROXY
-    JURITJ_API_URL: $PERF_TEST_JURITJ_API_URL
-    CLIENT_PRIVATE_KEY: $PERF_TEST_CLIENT_PRIVATE_KEY
-    CLIENT_CERT: $PERF_TEST_CLIENT_CERT
-    CA_CERT: $PERF_TEST_CA_CERT
   script:
     - echo $CI_JOB_TOKEN | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
     - docker build
@@ -81,13 +90,6 @@ test-juritj-sc1:
 
 test-juritj-sc2:
   stage: deploy
-  variables:
-    HTTP_PROXY: $HTTP_PROXY
-    HTTPS_PROXY: $HTTPS_PROXY
-    JURITJ_API_URL: $PERF_TEST_JURITJ_API_URL
-    CLIENT_PRIVATE_KEY: $PERF_TEST_CLIENT_PRIVATE_KEY
-    CLIENT_CERT: $PERF_TEST_CLIENT_CERT
-    CA_CERT: $PERF_TEST_CA_CERT
   script:
     - echo $CI_JOB_TOKEN | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
     - docker build

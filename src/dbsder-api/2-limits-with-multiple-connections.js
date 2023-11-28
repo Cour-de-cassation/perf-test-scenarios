@@ -1,5 +1,6 @@
 const autocannon = require('autocannon')
-const { autocannonConf } = require('./utils')
+const { decision, autocannonConf } = require('./utils')
+const decisionId = decision._id
 
 async function runLoad(amount, workers, connections) {
   const instance = await autocannon({
@@ -26,7 +27,22 @@ async function runSecondScenario() {
         await runLoad(10000, 8, 1000).then(async () => {
           // Round 5 : 10000 connections, 12 workers, 100000req
           console.log('========> SC2: Fifth load <========')
-          await runLoad(100000, 12, 10000)
+          await runLoad(100000, 12, 10000).then(async () => {
+            console.log('========> SC1: Deleting decision <========')
+            const instance = await autocannon({
+              title: 'DELETE /api/v1/decisions/:id',
+              url: `${process.env.DBSDER_API_URL}/v1/decisions/${decisionId}`,
+              headers: {
+                'x-api-key': process.env.OPS_API_KEY,
+                'Content-Type': 'application/json'
+              },
+              method: 'DELETE',
+              amount: 1,
+              connections: 1,
+              workers: 1
+            }).on('reqError', console.log)
+            console.log(instance)
+          })
         })
       })
     })

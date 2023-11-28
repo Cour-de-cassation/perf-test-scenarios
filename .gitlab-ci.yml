@@ -48,7 +48,7 @@ test-juritj:
     - echo $TEST_CERT_KEY > /certificates/client-cert.key
     - echo $TEST_PRIVATE_KEY > /certificates/private-key.pem
     - chmod 600 /certificates/*
-    - docker run perf-test-scenarios npm run test:juritj
+    - docker run perf-test-scenarios npm run test:connect:juritj
     - echo 'ok'
   tags:
     - docker
@@ -79,25 +79,25 @@ test-juritj-sc1:
     - dev
   when: manual
 
-#test-juritj-sc2:
-#  stage: deploy
-#  variables:
-#    HTTP_PROXY: $HTTP_PROXY
-#    HTTPS_PROXY: $HTTPS_PROXY
-#    JURITJ_API_URL: $PERF_TEST_JURITJ_API_URL
-#    CLIENT_PRIVATE_KEY: $PERF_TEST_CLIENT_PRIVATE_KEY
-#    CLIENT_CERT: $PERF_TEST_CLIENT_CERT
-#    CA_CERT: $PERF_TEST_CA_CERT
-#  script:
-#    - echo $CI_JOB_TOKEN | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
-#    - docker build
-#        --build-arg http_proxy=$HTTP_PROXY
-#        --build-arg https_proxy=$HTTPS_PROXY
-#        -t perf-test-scenarios .
-#    - docker run -e HTTP_PROXY=$HTTP_PROXY -e HTTPS_PROXY=$HTTPS_PROXY -e JURITJ_API_URL=$PERF_TEST_JURITJ_API_URL -e CLIENT_PRIVATE_KEY=$PERF_TEST_CLIENT_PRIVATE_KEY -e CLIENT_CERT=$PERF_TEST_CLIENT_CERT -e CA_CERT=$PERF_TEST_CA_CERT -e CLIENT_PRIVATE_KEY_PASSPHRASE=$PERF_TEST_CLIENT_PRIVATE_KEY_PASSPHRASE perf-test-scenarios npm run test:sc2:juritj
-#    - echo 'ok'
-#  tags:
-#    - docker
-#  only:
-#    - dev
-#  when: manual
+test-juritj-sc2:
+  stage: deploy
+  variables:
+    HTTP_PROXY: $HTTP_PROXY
+    HTTPS_PROXY: $HTTPS_PROXY
+    JURITJ_API_URL: $PERF_TEST_JURITJ_API_URL
+    CLIENT_PRIVATE_KEY: $PERF_TEST_CLIENT_PRIVATE_KEY
+    CLIENT_CERT: $PERF_TEST_CLIENT_CERT
+    CA_CERT: $PERF_TEST_CA_CERT
+  script:
+    - echo $CI_JOB_TOKEN | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+    - docker build
+        --build-arg http_proxy=$HTTP_PROXY
+        --build-arg https_proxy=$HTTPS_PROXY
+        -t perf-test-scenarios .
+    - docker run -e HTTP_PROXY=$HTTP_PROXY -e HTTPS_PROXY=$HTTPS_PROXY -e JURITJ_API_URL=$PERF_TEST_JURITJ_API_URL -e CLIENT_PRIVATE_KEY=$PERF_TEST_CLIENT_PRIVATE_KEY -e CLIENT_CERT=$PERF_TEST_CLIENT_CERT -e CA_CERT=$PERF_TEST_CA_CERT -e CLIENT_PRIVATE_KEY_PASSPHRASE=$PERF_TEST_CLIENT_PRIVATE_KEY_PASSPHRASE perf-test-scenarios npm run test:sc2:juritj
+    - echo 'ok'
+  tags:
+    - docker
+  only:
+    - dev
+  when: manual

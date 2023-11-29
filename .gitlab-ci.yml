@@ -27,7 +27,7 @@ test-dbsder:
         --build-arg http_proxy=$HTTP_PROXY
         --build-arg https_proxy=$HTTPS_PROXY
         -t perf-test-scenarios .
-    - docker run -e HTTP_PROXY=$HTTP_PROXY -e HTTPS_PROXY=$HTTPS_PROXY -e DBSDER_API_URL=$PERF_TEST_DBSDER_API_URL -e LABEL_API_KEY=$PERF_TEST_LABEL_API_KEY perf-test-scenarios npm run test:connect:dbsder
+    - docker run -e HTTP_PROXY=$HTTP_PROXY -e HTTPS_PROXY=$HTTPS_PROXY -e DBSDER_API_URL=$PERF_TEST_DBSDER_API_URL -e LABEL_API_KEY=$PERF_TEST_LABEL_API_KEY -e OPS_API_KEY=$PERF_TEST_OPS_API_KEY -e NORMALIZATION_API_KEY=$PERF_TEST_NORMALIZATION_API_KEY perf-test-scenarios npm run test:connect:dbsder
     - echo 'ok'
   tags:
     - docker
@@ -43,7 +43,7 @@ test-dbsder-api-sc1:
       --build-arg http_proxy=$HTTP_PROXY
       --build-arg https_proxy=$HTTPS_PROXY
       -t perf-test-scenarios .
-    - docker run -e HTTP_PROXY=$HTTP_PROXY -e HTTPS_PROXY=$HTTPS_PROXY -e DBSDER_API_URL=$PERF_TEST_DBSDER_API_URL -e OPS_API_KEY=$PERF_TEST_OPS_API_KEY -e NORMALIZATION_API_KEY=$PERF_TEST_NORMALIZATION_API_KEY perf-test-scenarios npm run test:sc1:dbsder-api
+    - docker run -e HTTP_PROXY=$HTTP_PROXY -e HTTPS_PROXY=$HTTPS_PROXY -e DBSDER_API_URL=$PERF_TEST_DBSDER_API_URL -e LABEL_API_KEY=$PERF_TEST_LABEL_API_KEY -e OPS_API_KEY=$PERF_TEST_OPS_API_KEY -e NORMALIZATION_API_KEY=$PERF_TEST_NORMALIZATION_API_KEY perf-test-scenarios npm run test:sc1:dbsder
     - echo 'ok'
   tags:
     - docker

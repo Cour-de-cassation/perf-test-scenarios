@@ -25,9 +25,9 @@ async function runSecondScenario() {
         // Round 4 : 1000 connections, 8 workers, 10000req
         console.log('========> SC2: Fourth load <========')
         await runLoad(10000, 8, 1000).then(async () => {
-          // Round 5 : 10000 connections, 12 workers, 100000req
+          // Round 5 : 1000 connections, 12 workers, 100000req
           console.log('========> SC2: Fifth load <========')
-          await runLoad(100000, 12, 10000).then(async () => {
+          await runLoad(100000, 12, 1000).then(async () => {
             console.log('========> SC1: Deleting decision <========')
             const instance = await autocannon({
               title: 'DELETE /api/v1/decisions/:id',

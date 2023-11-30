@@ -28,7 +28,7 @@ async function runSecondScenario() {
           // Round 5 : 400 connections, 12 workers, 150000req
           console.log('========> SC2: Fifth load <========')
           await runLoad(150000, 12, 400).then(async () => {
-            console.log('========> SC1: Deleting decision <========')
+            console.log('========> SC2: Deleting decision <========')
             const instance = await autocannon({
               title: 'DELETE /api/v1/decisions/:id',
               url: `${process.env.DBSDER_API_URL}/v1/decisions/${decisionId}`,

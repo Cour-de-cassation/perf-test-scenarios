@@ -1,6 +1,9 @@
 # Perf-test-scenarios
 
 Ce répertoire contient les tests de performance des applications juritj.
+Etat actuel : 
+- API DBSDER : ok 
+- API JURITJ : il reste le paramétrage des certificats à faire
 
 ## Outillage
 
@@ -8,7 +11,7 @@ Les tests se reposent sur la librairie [autocannon](https://github.com/mcollina/
 
 ## Paramétrage
 
-Afin de garantir l'appel, il faut renseigner variables suivantes :
+Afin de garantir l'appel, il faut renseigner variables suivantes dans un fichier `.env` :
 ````
 DBSDER_API_URL=http://localhost:PORT
 LABEL_API_KEY=LABEL_API_KEY
@@ -33,11 +36,20 @@ N'oubliez pas d'installer **husky** pour obtenir les hooks de commit/push
 npx husky install
 ```
 
-## Lancement
+## Lancement en local
 
-Au sein du **package.json**, on lance le script pour tester DbsderAPI via la commande :
+Au préalable, lancer l'application cible à tester. 
+Au sein du **package.json**, on lance le script via les commandes :
 
 ```
-npm run start:test:dbsder-api
+    "test:connect:dbsder": pour tester la connexion à l'API DBSDER
+    "test:sc1:dbsder": pour exécuter le premier scénario de test de perf sur l'API DBSDER
+    "test:sc2:dbsder": pour exécuter le deuxième scénario de test de perf sur l'API DBSDER
+    "test:connect:juritj": pour tester la connexion à l'API JURITJ
+    "test:sc1:juritj": pour exécuter le premier scénario de test de perf sur l'API JURITJ
+    "test:sc2:juritj": pour exécuter le premier scénario de test de perf sur l'API JURITJ
 ```
 
+## Lancement sur CI/CD
+
+Lors du déploiement sur CI/CD, il est possible de lancer les étapes précédentes manuellement sur la pipeline. 

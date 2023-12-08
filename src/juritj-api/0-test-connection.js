@@ -1,6 +1,7 @@
 const autocannon = require('autocannon')
 const { autocannonConf } = require('./utils')
 
+console.log(autocannonConf)
 autocannon(
   {
     ...autocannonConf,

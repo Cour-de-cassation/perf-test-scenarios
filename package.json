@@ -6,8 +6,7 @@
   "license": "MIT",
   "scripts": {
     "test:connect:dbsder": "node -r dotenv/config src/dbsder-api/0-test-connection.js",
-    "test:sc1:dbsder": "node -r dotenv/config src/dbsder-api/1-limits-with-one-connection.js",
-    "test:sc2:dbsder": "node -r dotenv/config src/dbsder-api/2-limits-with-multiple-connections.js",
+    "test:sc1:dbsder": "node -r dotenv/config src/dbsder-api/1-test-limits.js",
     "test:connect:juritj": "node -r dotenv/config src/juritj-api/0-test-connection.js",
     "test:sc1:juritj": "node -r dotenv/config src/juritj-api/1-limits-with-one-connection.js",
     "test:sc2:juritj": "node -r dotenv/config src/juritj-api/2-limits-with-multiple-connections.js",

@@ -1,5 +1,6 @@
+const autocannon = require('autocannon')
+
 const decision = {
-  _id: 'someID',
   appeals: ['someAppeal'],
   chamberId: 'someChamberId',
   chamberName: 'someChamberName',
@@ -56,18 +57,24 @@ const decision = {
   recommandationOccultation: 'aucune',
   pourvoiCourDeCassation: false,
   pourvoiLocal: false,
-  selection: false
+  selection: false,
+  idDecisionTJ: 'TJ00001A01-1234520221121'
 }
 
-const autocannonConf = {
-  title: 'PUT /api/v1/decisions',
-  url: `${process.env.DBSDER_API_URL}/v1/decisions`,
-  method: 'PUT',
-  headers: {
-    'x-api-key': process.env.NORMALIZATION_API_KEY,
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({ decision: decision })
+async function deleteDecision(createdDecisionId) {
+  const instance = await autocannon({
+    title: 'DELETE /api/v1/decisions/:id',
+    method: 'DELETE',
+    url: `${process.env.DBSDER_API_URL}/v1/decisions/${createdDecisionId}`,
+    headers: {
+      'x-api-key': process.env.OPS_API_KEY,
+      'Content-Type': 'application/json'
+    },
+    amount: 1,
+    connections: 1,
+    workers: 1
+  }).on('reqError', console.log)
+  console.log(instance)
 }
 
-module.exports = { decision, autocannonConf }
+module.exports = { decision, deleteDecision }

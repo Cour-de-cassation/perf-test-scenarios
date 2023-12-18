@@ -69,9 +69,6 @@ test-juritj:
   stage: deploy
   script:
     - echo $CI_JOB_TOKEN | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
-    - echo $PERF_TEST_CA_CERT
-    - echo $PERF_TEST_CLIENT_PRIVATE_KEY
-    - echo $PERF_TEST_CLIENT_CERT
     - echo $PERF_TEST_CA_CERT > /tmp/ca-cert.pem
     - echo $PERF_TEST_CLIENT_PRIVATE_KEY > /tmp/cert-key.key
     - echo $PERF_TEST_CLIENT_CERT > /tmp/certif.pem

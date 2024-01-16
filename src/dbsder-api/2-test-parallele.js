@@ -1,11 +1,13 @@
 const autocannon = require('autocannon')
 const { decision, deleteDecision } = require('./utils')
 
+const createdDecisionId = '65a6a14b1b1a2fc85c269b28'
+
 async function createDecision() {
-  let createdDecisionId
   const instance = await autocannon({
     url: `${process.env.DBSDER_API_URL}`,
-    amount: 50,
+    amount: 100,
+    workers: 5,
     requests: [
       {
         title: 'PUT /api/v1/decisions',
@@ -18,23 +20,18 @@ async function createDecision() {
         body: JSON.stringify({ decision: decision }),
         onResponse: (status, body) => {
           if (status === 200) {
-            createdDecisionId = JSON.parse(body)._id
+            console.log(JSON.parse(body)._id)
           }
         }
       }
     ]
   }).on('reqError', console.log)
   console.log(instance)
-  return createdDecisionId
 }
 
 async function runTestConnection() {
-  console.log('========> Test DBSDER API connection <========')
-  await createDecision().then(async (createdDecisionId) => {
-    console.log('========> Deleting decision <========')
-    console.log(createdDecisionId)
-    await deleteDecision(createdDecisionId)
-  })
+  console.log('========> Test Scenario 2 Parallel connection <========')
+  await createDecision()
 }
 
 runTestConnection()

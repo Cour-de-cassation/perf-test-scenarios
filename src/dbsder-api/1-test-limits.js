@@ -30,7 +30,7 @@ async function runLoad(amount) {
 
 async function runScenario() {
   console.log('========> Load 1 <========')
-  await runLoad(100).then(async (createdDecisionId) => {
+  await runLoad(20000).then(async (createdDecisionId) => {
     console.log('========> Deleting decision <========')
 
   })

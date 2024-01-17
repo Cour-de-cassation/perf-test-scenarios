@@ -1,13 +1,12 @@
 const autocannon = require('autocannon')
 const { decision, deleteDecision } = require('./utils')
 
-const createdDecisionId = '65a6a14b1b1a2fc85c269b28'
-
-async function createDecision() {
+async function createDecision(workers, amount) {
+  var createdDecisionId = null
   const instance = await autocannon({
     url: `${process.env.DBSDER_API_URL}`,
-    amount: 100,
-    workers: 5,
+    amount: amount,
+    connections: workers,
     requests: [
       {
         title: 'PUT /api/v1/decisions',
@@ -20,18 +19,33 @@ async function createDecision() {
         body: JSON.stringify({ decision: decision }),
         onResponse: (status, body) => {
           if (status === 200) {
-            console.log(JSON.parse(body)._id)
+            createdDecisionId = JSON.parse(body)._id
           }
         }
       }
     ]
   }).on('reqError', console.log)
   console.log(instance)
+  return createdDecisionId
 }
+
 
 async function runTestConnection() {
   console.log('========> Test Scenario 2 Parallel connection <========')
-  await createDecision()
+  const connectionsLevels = [1, 2, 3, 4, 5]
+  const requestAmounts = [100, 200, 300, 400, 500]
+
+  // Make the first call outside the loop to get the ID
+  const createdDecisionId = await createDecision(1, 1)
+
+  for (const connections of connectionsLevels) {
+    for (const amount of requestAmounts) {
+      console.log(`========> Test Scenario 2 for ${connections} connections and an amount of ${amount} <========`)
+      await createDecision(connections, amount)
+    }
+  }
+  console.log('========> Cleaning test decision <========')
+  deleteDecision(createdDecisionId)
 }
 
 runTestConnection()

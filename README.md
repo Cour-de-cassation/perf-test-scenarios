@@ -44,12 +44,18 @@ Au sein du **package.json**, on lance le script via les commandes :
 ```
     "test:connect:dbsder": pour tester la connexion à l'API DBSDER
     "test:sc1:dbsder": pour exécuter le premier scénario de test de perf sur l'API DBSDER
-    "test:sc2:dbsder": pour exécuter le deuxième scénario de test de perf sur l'API DBSDER
     "test:connect:juritj": pour tester la connexion à l'API JURITJ
     "test:sc1:juritj": pour exécuter le premier scénario de test de perf sur l'API JURITJ
-    "test:sc2:juritj": pour exécuter le premier scénario de test de perf sur l'API JURITJ
 ```
 
 ## Lancement sur CI/CD
-
 Lors du déploiement sur CI/CD, il est possible de lancer les étapes précédentes manuellement sur la pipeline. 
+
+## Points d'attention
+
+### JuriTJ Collecte 
+L'exécution des scénarios entraine la création d'une décision via l'API JURITJ Collecte sur le bucket S3, et après normalisation, sur la DBSDER (via API DBSDER). 
+La suppression de la décision nouvellement créée se fait manuellement sur la base des métadonnées de la décision (sourceId / sourceName). 
+
+### API DBSDER 
+L'exécution des scénarios entraine la création d'une décision en DBSDER. La suppression est automatisée (exécution en fin de scénarios). 

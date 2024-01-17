@@ -34,8 +34,8 @@ const autocannonConf = {
       type: 'text',
       value: JSON.stringify(mandatoryDecisionMetadata)
     }
-  },  
-  tlsOptions: readCerts() 
+  },
+  tlsOptions: readCerts()
 }
 
 function readCerts() {
@@ -43,12 +43,11 @@ function readCerts() {
   const caCert = fs.readFileSync('/tmp/ca-cert.pem')
   const cert = fs.readFileSync('/tmp/certif.pem')
   const key = fs.readFileSync('/tmp/cert-key.key')
-  return { 
+  return {
     ca: caCert,
     cert: cert,
     key: key,
     passphrase: process.env.CLIENT_PRIVATE_KEY_PASSPHRASE
   }
-
 }
 module.exports = { mandatoryDecisionMetadata, autocannonConf }

@@ -32,7 +32,6 @@ async function runTestConnection() {
   console.log('========> Test DBSDER API connection <========')
   await createDecision().then(async (createdDecisionId) => {
     console.log('========> Deleting decision <========')
-    console.log(createdDecisionId)
     await deleteDecision(createdDecisionId)
   })
 }
